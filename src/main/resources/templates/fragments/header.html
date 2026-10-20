@@ -22,9 +22,11 @@
       </ul>
     </div>
     <div style="float:right">
-      <p sec:authorize="!isAuthenticated()">Vous n'êtes pas connecté.<br>
-        <a th:href="@{/login}">Se connecter</a>
-      </p>
+      <div sec:authorize="!isAuthenticated()">
+        <p>Vous n'êtes pas connecté.</p>
+        <p><a th:href="@{/login}">Se connecter</a></p>
+        <p><a th:href="@{/register}">S'inscrire</a></p>
+      </div>
       <div sec:authorize="isAuthenticated()">
         <p>Bonjour <span sec:authentication="principal.username">Bob</span> !</p>
         <form th:action="@{/logout}" method="post">
