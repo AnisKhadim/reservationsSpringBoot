@@ -31,7 +31,15 @@
             </tr>
             </tbody>
         </table>
-        <p><a th:href="@{/profile(edit)}">Modifier</a></p>
+        <ul>
+            <li><a th:href="@{/profile(edit)}">Modifier</a></li>
+            <li>
+                <form th:action="@{/profile/delete}" th:method="delete"
+                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                    <button type="submit">Supprimer mon compte</button>
+                </form>
+            </li>
+        </ul>
     </section>
 
     <section th:if="${param.edit != null}">
@@ -73,16 +81,4 @@
                 <div class="error" th:errors="*{password}"></div>
             </div>
             <div>
-                <label>Confirmer le mot de passe (laisser vide pour ne pas changer):</label>
-                <input type="password" th:field="*{confirmPassword}" />
-            </div>
-            <!-- Erreur globale -->
-            <div class="error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
-            <button type="submit" style="margin-top: 15px;">Mettre à jour</button>
-            <p><a th:href="@{/profile}">Annuler</a></p>
-        </form>
-    </section>
-
-</div>
-</body>
-</html>
+                <label>Confirmer le mot de passe (laisser
