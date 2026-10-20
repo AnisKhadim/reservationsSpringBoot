@@ -6,13 +6,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.iccbxl.pid.reservationsspringboot.dto.UserProfileDto;
 import be.iccbxl.pid.reservationsspringboot.model.Language;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 import be.iccbxl.pid.reservationsspringboot.service.UserService;
+import jakarta.validation.Valid;
 
 @Controller
 public class ProfileController {
@@ -55,5 +60,23 @@ public class ProfileController {
         model.addAttribute("user", dto);
 
         return "authentication/profile";
+    }
+
+    // Enregistrer les modifications
+    @PostMapping(value = "/profile", params = {"edit"})
+    public String updateProfile(
+            @Valid @ModelAttribute("user") UserProfileDto dto,
+            BindingResult result, Model model, RedirectAttributes redirAttrs) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("errorMessage", "Erreurs de validation !");
+            return "authentication/profile";
+        }
+
+        // Appel du service pour gérer mot de passe, etc.
+        userService.updateUserFromDto(dto);
+
+        redirAttrs.addFlashAttribute("successMessage", "Profil mis à jour avec succès !");
+        return "redirect:profile";
     }
 }
