@@ -39,6 +39,8 @@
             <input type="password" th:field="*{confirmPassword}" required>
             <div class="error" th:errors="*{confirmPassword}"></div>
         </div>
+        <!-- Erreur globale sur le formulaire (mot de passe non concordant) -->
+        <div class="error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
         <div>
             <label>Langue</label>
             <select th:field="*{langue}">
